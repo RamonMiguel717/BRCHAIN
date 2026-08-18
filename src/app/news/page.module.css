@@ -1,0 +1,79 @@
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(250, 252, 251, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.6);
+  padding: 12px 0;
+}
+.headerWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--green-deep);
+  letter-spacing: -0.5px;
+}
+.brand span {
+  color: var(--green-brand);
+}
+
+.main {
+  padding-top: 68px;
+}
+
+.hero {
+  text-align: center;
+  padding: 70px 0 40px;
+}
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--green-deep);
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+.hero p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+.listSection {
+  padding: 20px 0 100px;
+}
+.listHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.listHeader h2 {
+  font-size: 1.8rem;
+  color: var(--green-deep);
+  font-weight: 800;
+}
+.count {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 26px;
+}
+
+@media (max-width: 620px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+}

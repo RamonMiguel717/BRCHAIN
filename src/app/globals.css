@@ -1,0 +1,77 @@
+/* ============================================================
+   BRChain — Estilos globais
+   Tokens de marca portados do repositório oficial (css/style.css).
+   Requisitos de acessibilidade (doc seção 3.1 / 6):
+   corpo >= 16px (usamos 18px), alto contraste AA, toque >= 44x44px.
+   ============================================================ */
+
+:root {
+  --bg-color: #fafcfb;
+  --text-dark: #071a11;
+  --text-muted: #4a6356;
+  --green-brand: #059669;
+  --green-accent: #10b981;
+  --green-deep: #022c22;
+  --green-light: #d1fae5;
+  --green-panel: #ecfdf5; /* fundo suave para blocos de notícia */
+  --border-soft: rgba(229, 231, 235, 0.6);
+  --gradient-brand: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --radius: 16px;
+  --container: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-inter), "Inter", system-ui, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  line-height: 1.6;
+  font-size: 18px; /* texto corrido — doc 3.1 */
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Acessibilidade: foco visível por teclado (WCAG 2.1) */
+:focus-visible {
+  outline: 3px solid var(--green-accent);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

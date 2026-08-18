@@ -1,0 +1,29 @@
+.footer {
+  background: var(--green-deep);
+  color: #a7f3d0;
+  padding: 60px 0 30px;
+  text-align: center;
+}
+.logo {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.links a {
+  color: #a7f3d0;
+  font-weight: 500;
+}
+.links a:hover {
+  color: #fff;
+}
+.copy {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}

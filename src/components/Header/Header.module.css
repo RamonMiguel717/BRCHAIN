@@ -1,0 +1,68 @@
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background: rgba(250, 252, 251, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  z-index: 1000;
+  padding: 14px 0;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.nav ul {
+  display: flex;
+  gap: 44px;
+  list-style: none;
+  align-items: center;
+}
+.nav a {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  transition: color 0.3s;
+  padding: 6px 0;
+  text-align: center; /* centraliza rótulos que quebram em duas linhas */
+  line-height: 1.25;
+}
+.nav a:hover {
+  color: var(--green-brand);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .nav {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .actions .newsBtn {
+    display: none; /* mantém apenas o CTA de contato em telas muito estreitas */
+  }
+}
