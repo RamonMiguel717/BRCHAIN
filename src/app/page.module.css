@@ -4,7 +4,7 @@
 
 /* ---------------- Hero ---------------- */
 .hero {
-  padding: 96px 0 100px;
+  padding: 60px 0 60px;
   position: relative;
   overflow: hidden;
 }
@@ -124,7 +124,7 @@
 }
 
 .problem {
-  padding: 110px 0;
+  padding: 60px 0;
   background: #fff;
 }
 .subTitle {
@@ -175,7 +175,7 @@
 
 /* ---------------- Pesquisa / DaaS ---------------- */
 .layer {
-  padding: 110px 0;
+  padding: 60px 0;
   text-align: center;
   background: linear-gradient(180deg, var(--bg-color) 0%, #fff 100%);
 }
@@ -196,7 +196,7 @@
 }
 .loopGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   text-align: left;
   margin-top: 36px;
@@ -219,12 +219,12 @@
 
 /* ---------------- Soluções Corporativas ---------------- */
 .solucoes {
-  padding: 110px 0;
+  padding: 60px 0;
   background: var(--bg-color);
 }
 .agentsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
 .agentCard {
@@ -251,7 +251,7 @@
 
 /* ---------------- CTA final ---------------- */
 .cta {
-  padding: 110px 0;
+  padding: 60px 0;
   background: var(--gradient-brand);
   color: #fff;
   text-align: center;

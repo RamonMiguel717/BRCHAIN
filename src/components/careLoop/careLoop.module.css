@@ -1,0 +1,87 @@
+.careLoop {
+    padding: 60px 0;
+}
+
+.header {
+    text-align: center;
+    margin: 0 auto 60px;
+    max-width: 820px;
+    margin-bottom: 32px;
+}
+
+.header h2 {
+    margin: 0 0 12px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.header p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.letters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-bottom: 16px;
+}
+
+.letterButton {
+    aspect-ratio: 1 / 1;
+    max-width: 120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid var(--green-deep);
+    border-radius: 8px;
+
+    background: transparent;
+    color: var(--green-deep);
+
+    font-size: 4rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.letterButton:hover {
+    transform: translateY(-3px);
+}
+
+.letterButton.active {
+    background: var(--gradient-brand);
+    color: white;
+    border-color: transparent;
+    border: none;
+}
+
+.textContent h3 {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+}
+
+.textContent p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .letters {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .letterButton {
+        max-width: none;
+    }
+}

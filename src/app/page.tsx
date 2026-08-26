@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer/Footer";
 import { LinkButton } from "@/components/Button/Button";
 import { ContactProvider } from "@/components/contact/ContactProvider";
 import { ContactButton } from "@/components/contact/ContactButton";
+import { CareLoop } from "@/components/careLoop/careLoop";
 import { LandingNewsPreview } from "@/components/news/LandingNewsPreview";
 import styles from "./page.module.css";
 
@@ -56,7 +57,7 @@ export default function LandingPage() {
               <p>
                 Em um ecossistema crítico como o da saúde, tratar a privacidade como um mero
                 checklist jurídico é um risco incalculável. Na BRChain, elevamos a proteção e a
-                gestão da informação à categoria de infraestrutura crítica — com ética, privacidade
+                gestão da informação à categoria de infraestrutura crítica, com ética, privacidade
                 e segurança nativas.
               </p>
             </div>
@@ -117,7 +118,7 @@ export default function LandingPage() {
                   <h4>Ambientes Sandbox Isolados e Seguros</h4>
                   <p>
                     Treine modelos de IA e valide algoritmos com conjuntos anonimizados ou dados
-                    sintéticos — valor científico sem risco de reidentificação.
+                    sintéticos. Valor científico sem risco de reidentificação.
                   </p>
                 </div>
                 <div className={styles.loopStep}>
@@ -146,13 +147,16 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ---------------- BRChain News (integração) ---------------- */}
+        <CareLoop />
+
         {/* ---------------- Soluções Corporativas ---------------- */}
         <section id="solucoes" className={styles.solucoes}>
           <div className="container">
             <div className={styles.sectionHeader}>
               <h2>Soluções Corporativas e Integração via APIs</h2>
               <p>
-                A BRChain atua como o motor invisível e seguro da sua operação — uma suíte de
+                A BRChain atua como o motor invisível e seguro da sua operação, uma suíte de
                 soluções B2B e APIs robustas que injetam governança avançada, rastreabilidade e
                 conformidade regulatória.
               </p>
@@ -183,7 +187,7 @@ export default function LandingPage() {
               <div className={styles.agentCard}>
                 <h4>Escalabilidade Inteligente e Validação</h4>
                 <p>
-                  Modelos de integração adaptáveis — pay-per-use, assinaturas ou licenciamento — com
+                  Modelos de integração adaptáveis, pay-per-use, assinaturas ou licenciamento, com
                   investimento escalável e previsível.
                 </p>
               </div>
