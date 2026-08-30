@@ -11,26 +11,36 @@
 
 .header h2 {
     margin: 0 0 12px;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--green-deep);
 }
 
 .header p {
-    margin: 0;
+    color: var(--text-muted);
     font-size: 1.1rem;
-    line-height: 1.5;
+}
+
+.header h2 span {
+    background: var(--green-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
 
 .letters {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
     gap: 40px;
     margin-bottom: 16px;
+    justify-content: space-between;
+}
+
+.lettersDiv{
+    padding: 0 40px;
 }
 
 .letterButton {
-    aspect-ratio: 1 / 1;
-    max-width: 120px;
+    width: 120px;
+    height: 120px;
 
     display: flex;
     align-items: center;
@@ -58,7 +68,7 @@
 }
 
 .letterButton.active {
-    background: var(--gradient-brand);
+    background: var(--green-gradient);
     color: white;
     border-color: transparent;
     border: none;
@@ -66,13 +76,17 @@
 
 .textContent h3 {
     margin: 0 0 8px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    background: var(--green-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
 
 .textContent p {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1.5;
+    font-weight: 500;
 }
 
 @media (max-width: 768px) {

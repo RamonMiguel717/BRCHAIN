@@ -1,7 +1,3 @@
-.main {
-  padding-top: 64px; /* compensa o header fixo */
-}
-
 /* ---------------- Hero ---------------- */
 .hero {
   padding: 60px 0 60px;
@@ -269,7 +265,19 @@
 }
 
 /* ---------------- Responsivo ---------------- */
-@media (max-width: 960px) {
+@media (min-width: 1200px) and (max-width: 1400px) {
+}
+
+@media (min-width: 993px) and (max-width: 1200px) {
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+}
+
+@media (min-width: 578px) and (max-width: 768px) {
+}
+
+@media (min-width: 390px) and (max-width: 577px) {
   .heroWrapper {
     grid-template-columns: 1fr;
     text-align: center;
@@ -285,17 +293,4 @@
     height: 440px;
   }
 }
-@media (max-width: 620px) {
-  .heroContent h1 {
-    font-size: 2.6rem;
-  }
-  .buttons {
-    flex-direction: column;
-  }
-  .sectionHeader h2 {
-    font-size: 2rem;
-  }
-  .cta h2 {
-    font-size: 2.2rem;
-  }
-}
+

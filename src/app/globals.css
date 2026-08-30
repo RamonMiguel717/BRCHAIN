@@ -15,6 +15,7 @@
   --green-light: #d1fae5;
   --green-panel: #ecfdf5; /* fundo suave para blocos de notícia */
   --border-soft: rgba(229, 231, 235, 0.6);
+  --green-gradient: linear-gradient(#06926C 0%, #046345 50%, #023424 100%);
   --gradient-brand: linear-gradient(135deg, #059669 0%, #10b981 100%);
   --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.1);

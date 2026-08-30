@@ -39,29 +39,31 @@ export function CareLoop() {
     <section id="brchainCareLoop" className={styles.careLoop}>
       <div className="container">
         <div className={styles.header}>
-          <h2>O BRchain CARE LOOP</h2>
+          <h2>O BRchain <span>CARE LOOP</span></h2>
           <p>
             O paciente no centro da operação, com retroalimentação contínua de
             dados e inteligência.
           </p>
         </div>
-        <div className={styles.letters}>
-          {careLoopItems.map((item, index) => (
-            <button
-              key={item.letter}
-              type="button"
-              className={`${styles.letterButton} ${
-                activeIndex === index ? styles.active : ""
-              }`}
-              onClick={() => setActiveIndex(index)}
-            >
-              {item.letter}
-            </button>
-          ))}
-        </div>
-        <div className={styles.textContent}>
-          <h3>{activeItem.title}</h3>
-          <p>{activeItem.description}</p>
+        <div className={styles.lettersDiv}>
+          <div className={styles.letters}>
+            {careLoopItems.map((item, index) => (
+              <button
+                key={item.letter}
+                type="button"
+                className={`${styles.letterButton} ${
+                  activeIndex === index ? styles.active : ""
+                }`}
+                onClick={() => setActiveIndex(index)}
+              >
+                {item.letter}
+              </button>
+            ))}
+          </div>
+          <div className={styles.textContent}>
+            <h3>{activeItem.title}</h3>
+            <p>{activeItem.description}</p>
+          </div>
         </div>
       </div>
     </section>
