@@ -1,0 +1,31 @@
+.embla {
+  width: 100%;
+}
+
+.emblaViewport {
+  overflow: hidden;
+}
+
+.emblaContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+
+@media (min-width: 390px) and (max-width: 577px) {
+  .emblaViewport {
+    overflow: hidden;
+  }
+
+  .emblaContainer {
+    display: flex;
+  }
+
+  .emblaContainer > * {
+    flex: 0 0 85%;
+    min-width: 0;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+}

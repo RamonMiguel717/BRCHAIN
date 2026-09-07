@@ -24,7 +24,7 @@
 .header h2 span {
     background: var(--green-gradient);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
+    -webkit-text-fill-color: transparent;
 }
 
 .letters {
@@ -34,7 +34,7 @@
     justify-content: space-between;
 }
 
-.lettersDiv{
+.lettersDiv {
     padding: 0 40px;
 }
 
@@ -46,11 +46,11 @@
     align-items: center;
     justify-content: center;
 
-    border: 2px solid var(--green-deep);
+    border: 1.5px solid var(--green-brand);
     border-radius: 8px;
 
     background: transparent;
-    color: var(--green-deep);
+    color: var(--green-brand);
 
     font-size: 4rem;
     font-weight: 700;
@@ -77,16 +77,15 @@
 .textContent h3 {
     margin: 0 0 8px;
     font-size: 1.5rem;
-    background: var(--green-gradient);
+    background: var(--green-brand);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
+    -webkit-text-fill-color: transparent;
 }
 
 .textContent p {
     margin: 0;
     font-size: 1.1rem;
-    line-height: 1.5;
-    font-weight: 500;
+    color: var(--text-muted);
 }
 
 @media (max-width: 768px) {
@@ -97,5 +96,49 @@
 
     .letterButton {
         max-width: none;
+    }
+}
+
+/* ---------------- Responsivo ---------------- */
+@media (min-width: 1200px) and (max-width: 1400px) {}
+
+@media (min-width: 993px) and (max-width: 1200px) {}
+
+@media (min-width: 769px) and (max-width: 992px) {}
+
+@media (min-width: 578px) and (max-width: 768px) {}
+
+@media (min-width: 390px) and (max-width: 577px) {
+    .careLoop {
+        padding: 40px 0;
+    }
+
+    .header h2 {
+        font-size: 28px;
+    }
+
+    .header p {
+        font-size: 16px;
+    }
+
+    .lettersDiv {
+        padding: 0;
+    }
+
+    .letterButton {
+        width: 80px;
+        height: 80px;
+    }
+
+    .header{
+        text-align: start;
+    }
+
+    .textContent h3 {
+        font-size: 20px;
+    }
+
+    .textContent p {
+        font-size: 16px;
     }
 }

@@ -6,6 +6,8 @@ import { ContactProvider } from "@/components/contact/ContactProvider";
 import { ContactButton } from "@/components/contact/ContactButton";
 import { CareLoop } from "@/components/careLoop/careLoop";
 import { LandingNewsPreview } from "@/components/news/LandingNewsPreview";
+import { AgentsCarousel } from "@/components/agentsCarousel/agentsCarousel";
+import { GovernanceCarousel } from "@/components/governanceCarousel/governanceCarousel";
 import styles from "./page.module.css";
 
 export default function LandingPage() {
@@ -63,36 +65,50 @@ export default function LandingPage() {
             </div>
 
             <h3 className={styles.subTitle}>Nossos Pilares de Governança e Conformidade</h3>
-            <div className={styles.grid}>
+            <GovernanceCarousel>
               <div className={styles.visionCard}>
                 <h3>Arquitetura Fundamentada no</h3>
-                <p className={styles.highlight}>DAMA-DMBOK e COBIT 2019</p>
+
+                <p className={styles.highlight}>
+                  DAMA-DMBOK e COBIT 2019
+                </p>
+
                 <p>
                   Gestão de metadados, linhagem de dados e padronização para transformar dados
                   brutos em ativos estratégicos, confiáveis e interoperáveis.
                 </p>
               </div>
+
               <div className={styles.visionCard}>
                 <h3>Alinhamento Estrito com a</h3>
-                <p className={styles.highlight}>LGPD e Diretrizes da ANPD</p>
+
+                <p className={styles.highlight}>
+                  LGPD e Diretrizes da ANPD
+                </p>
+
                 <p>
                   Privacidade como núcleo (Privacy by Design e by Default). Atendimento rigoroso ao
                   exigido pela Autoridade Nacional de Proteção de Dados.
                 </p>
               </div>
+
               <div className={styles.visionCard}>
                 <h3>O Imperativo da Ética na</h3>
-                <p className={styles.highlight}>Gestão da Saúde</p>
+
+                <p className={styles.highlight}>
+                  Gestão da Saúde
+                </p>
+
                 <p>
                   Proteção absoluta da identidade. O dado é rigorosamente anonimizado sem comprometer
                   o valor analítico para pesquisa e inovação.
                 </p>
               </div>
-            </div>
+            </GovernanceCarousel>
 
             <div className={styles.center}>
               <ContactButton variant="primary">
-                Agende uma avaliação da sua governança de dados
+                Avaliação de governança de dados
               </ContactButton>
             </div>
           </div>
@@ -162,7 +178,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className={styles.agentsGrid}>
+            <AgentsCarousel>
               <div className={styles.agentCard}>
                 <h4>API as a Service: Criptografia e Consentimento</h4>
                 <p>
@@ -170,6 +186,7 @@ export default function LandingPage() {
                   consentimento do paciente em tempo real.
                 </p>
               </div>
+
               <div className={styles.agentCard}>
                 <h4>Engenharia de Dados para o Futuro Analítico</h4>
                 <p>
@@ -177,6 +194,7 @@ export default function LandingPage() {
                   Lakes corporativos e IA.
                 </p>
               </div>
+
               <div className={styles.agentCard}>
                 <h4>Licenciamento de Propriedade Intelectual</h4>
                 <p>
@@ -184,6 +202,7 @@ export default function LandingPage() {
                   maturidade digital com arquitetura validada.
                 </p>
               </div>
+
               <div className={styles.agentCard}>
                 <h4>Escalabilidade Inteligente e Validação</h4>
                 <p>
@@ -191,7 +210,7 @@ export default function LandingPage() {
                   investimento escalável e previsível.
                 </p>
               </div>
-            </div>
+            </AgentsCarousel>
 
             <div className={styles.center} style={{ marginTop: 40 }}>
               <ContactButton variant="primary">Fale com Nossos Especialistas</ContactButton>
