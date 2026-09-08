@@ -1,5 +1,6 @@
 import { LinkButton } from "@/components/Button/Button";
 import { NewsCard } from "./NewsCard";
+import { NewsCarousel } from "./NewsCarousel";
 import { getApprovedNews } from "@/lib/news-queries";
 import styles from "./LandingNewsPreview.module.css";
 
@@ -9,7 +10,7 @@ import styles from "./LandingNewsPreview.module.css";
  * Server Component: busca no servidor (RLS garante só `approved`).
  */
 export async function LandingNewsPreview() {
-  const { items } = await getApprovedNews({ limit: 2 });
+  const { items } = await getApprovedNews({ limit: 10 });
 
   return (
     <section id="news" className={styles.section}>
@@ -27,11 +28,11 @@ export async function LandingNewsPreview() {
 
         <div className={styles.panel}>
           {items.length > 0 ? (
-            <div className={styles.grid}>
+            <NewsCarousel>
               {items.map((item) => (
                 <NewsCard key={item.id} item={item} />
               ))}
-            </div>
+            </NewsCarousel>
           ) : (
             <div className={styles.empty}>
               As notícias curadas aparecerão aqui assim que forem aprovadas no Painel de Curadoria.

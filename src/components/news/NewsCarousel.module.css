@@ -1,0 +1,67 @@
+.embla {
+  position: relative;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--green-brand);
+  background: #fff;
+  color: var(--green-brand);
+  font-size: 1.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.arrow:hover:not(:disabled) {
+  background: var(--green-brand);
+  color: #fff;
+}
+.arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.viewport {
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Desktop: ~3 cartões por vez */
+.container > * {
+  flex: 0 0 calc((100% - 48px) / 3);
+  min-width: 0;
+}
+
+/* Tablet: 2 por vez */
+@media (max-width: 900px) {
+  .container > * {
+    flex-basis: calc((100% - 24px) / 2);
+  }
+}
+
+/* Mobile: ~1 cartão (swipe); esconde as setas */
+@media (max-width: 577px) {
+  .controls {
+    display: none;
+  }
+  .container > * {
+    flex-basis: 85%;
+  }
+}
