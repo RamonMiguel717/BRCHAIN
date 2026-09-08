@@ -1,20 +1,24 @@
 .section {
-  padding: 100px 0;
+  padding: 60px 0;
   background: #fff;
 }
+
 .head {
   max-width: 760px;
   margin-bottom: 40px;
 }
+
 .head h2 {
   font-size: 2.4rem;
   font-weight: 800;
   color: var(--green-deep);
   margin-bottom: 16px;
 }
+
 .head h2 span {
   color: var(--green-brand);
 }
+
 .head p {
   font-size: 1.15rem;
   color: var(--text-muted);
@@ -25,16 +29,19 @@
   border-radius: 28px;
   padding: 40px;
 }
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
 }
+
 .cta {
   display: flex;
   justify-content: flex-end;
   margin-top: 28px;
 }
+
 .empty {
   background: #fff;
   border: 1px dashed var(--green-brand);
@@ -44,11 +51,26 @@
   color: var(--text-muted);
 }
 
-@media (max-width: 620px) {
-  .panel {
-    padding: 24px;
+/* ---------------- Responsivo ---------------- */
+@media (min-width: 1200px) and (max-width: 1400px) {}
+
+@media (min-width: 993px) and (max-width: 1200px) {}
+
+@media (min-width: 769px) and (max-width: 992px) {}
+
+@media (min-width: 578px) and (max-width: 768px) {}
+
+@media (min-width: 390px) and (max-width: 577px) {
+  .section {
+    padding: 40px 0;
   }
-  .cta {
-    justify-content: center;
+
+  .head h2 {
+    font-size: 28px;
+  }
+
+  .head p,
+  .empty {
+    font-size: 16px;
   }
 }

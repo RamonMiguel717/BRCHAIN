@@ -1,5 +1,5 @@
 .footer {
-  background: var(--green-deep);
+  background: var(--gradient-brand);
   color: #a7f3d0;
   padding: 60px 0 30px;
   text-align: center;
@@ -14,7 +14,7 @@
   justify-content: center;
   gap: 28px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 .links a {
   color: #a7f3d0;
@@ -24,6 +24,7 @@
   color: #fff;
 }
 .copy {
-  font-size: 0.9rem;
+  font-size: 14px;
   opacity: 0.7;
+  color: var(--green-deep);
 }

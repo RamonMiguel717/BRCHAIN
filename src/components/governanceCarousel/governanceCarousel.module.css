@@ -1,0 +1,36 @@
+.embla {
+  width: 100%;
+}
+
+.emblaViewport {
+  width: 100%;
+}
+
+.emblaContainer {
+  display: flex;
+  gap: 24px;
+}
+
+/* Desktop / telas maiores */
+.emblaContainer > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+
+@media (min-width: 390px) and (max-width: 577px) {
+  .emblaViewport {
+    overflow: hidden;
+  }
+
+  .emblaContainer {
+    gap: 0;
+  }
+
+  .emblaContainer > * {
+    flex: 0 0 85%;
+    min-width: 0;
+    margin-right: 16px;
+    box-sizing: border-box;
+  }
+}

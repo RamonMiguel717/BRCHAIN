@@ -4,7 +4,10 @@ import { Footer } from "@/components/Footer/Footer";
 import { LinkButton } from "@/components/Button/Button";
 import { ContactProvider } from "@/components/contact/ContactProvider";
 import { ContactButton } from "@/components/contact/ContactButton";
+import { CareLoop } from "@/components/careLoop/careLoop";
 import { LandingNewsPreview } from "@/components/news/LandingNewsPreview";
+import { AgentsCarousel } from "@/components/agentsCarousel/agentsCarousel";
+import { GovernanceCarousel } from "@/components/governanceCarousel/governanceCarousel";
 import styles from "./page.module.css";
 
 export default function LandingPage() {
@@ -56,42 +59,56 @@ export default function LandingPage() {
               <p>
                 Em um ecossistema crítico como o da saúde, tratar a privacidade como um mero
                 checklist jurídico é um risco incalculável. Na BRChain, elevamos a proteção e a
-                gestão da informação à categoria de infraestrutura crítica — com ética, privacidade
+                gestão da informação à categoria de infraestrutura crítica, com ética, privacidade
                 e segurança nativas.
               </p>
             </div>
 
             <h3 className={styles.subTitle}>Nossos Pilares de Governança e Conformidade</h3>
-            <div className={styles.grid}>
+            <GovernanceCarousel>
               <div className={styles.visionCard}>
                 <h3>Arquitetura Fundamentada no</h3>
-                <p className={styles.highlight}>DAMA-DMBOK e COBIT 2019</p>
+
+                <p className={styles.highlight}>
+                  DAMA-DMBOK e COBIT 2019
+                </p>
+
                 <p>
                   Gestão de metadados, linhagem de dados e padronização para transformar dados
                   brutos em ativos estratégicos, confiáveis e interoperáveis.
                 </p>
               </div>
+
               <div className={styles.visionCard}>
                 <h3>Alinhamento Estrito com a</h3>
-                <p className={styles.highlight}>LGPD e Diretrizes da ANPD</p>
+
+                <p className={styles.highlight}>
+                  LGPD e Diretrizes da ANPD
+                </p>
+
                 <p>
                   Privacidade como núcleo (Privacy by Design e by Default). Atendimento rigoroso ao
                   exigido pela Autoridade Nacional de Proteção de Dados.
                 </p>
               </div>
+
               <div className={styles.visionCard}>
                 <h3>O Imperativo da Ética na</h3>
-                <p className={styles.highlight}>Gestão da Saúde</p>
+
+                <p className={styles.highlight}>
+                  Gestão da Saúde
+                </p>
+
                 <p>
                   Proteção absoluta da identidade. O dado é rigorosamente anonimizado sem comprometer
                   o valor analítico para pesquisa e inovação.
                 </p>
               </div>
-            </div>
+            </GovernanceCarousel>
 
             <div className={styles.center}>
               <ContactButton variant="primary">
-                Agende uma avaliação da sua governança de dados
+                Avaliação de governança de dados
               </ContactButton>
             </div>
           </div>
@@ -117,7 +134,7 @@ export default function LandingPage() {
                   <h4>Ambientes Sandbox Isolados e Seguros</h4>
                   <p>
                     Treine modelos de IA e valide algoritmos com conjuntos anonimizados ou dados
-                    sintéticos — valor científico sem risco de reidentificação.
+                    sintéticos. Valor científico sem risco de reidentificação.
                   </p>
                 </div>
                 <div className={styles.loopStep}>
@@ -146,19 +163,22 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ---------------- BRChain News (integração) ---------------- */}
+        <CareLoop />
+
         {/* ---------------- Soluções Corporativas ---------------- */}
         <section id="solucoes" className={styles.solucoes}>
           <div className="container">
             <div className={styles.sectionHeader}>
               <h2>Soluções Corporativas e Integração via APIs</h2>
               <p>
-                A BRChain atua como o motor invisível e seguro da sua operação — uma suíte de
+                A BRChain atua como o motor invisível e seguro da sua operação, uma suíte de
                 soluções B2B e APIs robustas que injetam governança avançada, rastreabilidade e
                 conformidade regulatória.
               </p>
             </div>
 
-            <div className={styles.agentsGrid}>
+            <AgentsCarousel>
               <div className={styles.agentCard}>
                 <h4>API as a Service: Criptografia e Consentimento</h4>
                 <p>
@@ -166,6 +186,7 @@ export default function LandingPage() {
                   consentimento do paciente em tempo real.
                 </p>
               </div>
+
               <div className={styles.agentCard}>
                 <h4>Engenharia de Dados para o Futuro Analítico</h4>
                 <p>
@@ -173,6 +194,7 @@ export default function LandingPage() {
                   Lakes corporativos e IA.
                 </p>
               </div>
+
               <div className={styles.agentCard}>
                 <h4>Licenciamento de Propriedade Intelectual</h4>
                 <p>
@@ -180,14 +202,15 @@ export default function LandingPage() {
                   maturidade digital com arquitetura validada.
                 </p>
               </div>
+
               <div className={styles.agentCard}>
                 <h4>Escalabilidade Inteligente e Validação</h4>
                 <p>
-                  Modelos de integração adaptáveis — pay-per-use, assinaturas ou licenciamento — com
+                  Modelos de integração adaptáveis, pay-per-use, assinaturas ou licenciamento, com
                   investimento escalável e previsível.
                 </p>
               </div>
-            </div>
+            </AgentsCarousel>
 
             <div className={styles.center} style={{ marginTop: 40 }}>
               <ContactButton variant="primary">Fale com Nossos Especialistas</ContactButton>

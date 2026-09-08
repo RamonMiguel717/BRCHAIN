@@ -4,6 +4,7 @@ import { LinkButton } from "@/components/Button/Button";
 import { NewsExplorer } from "@/components/news/NewsExplorer";
 import { getApprovedNews } from "@/lib/news-queries";
 import styles from "./page.module.css";
+import NoticiasCarousel from "./NoticiasCarousel/NoticiasCarousel";
 
 export const metadata: Metadata = {
   title: "BRChain News — Notícias de Saúde",
@@ -38,6 +39,8 @@ export default async function NewsPage() {
             <p>Acompanhe notícias sobre saúde e bem-estar, curadas pela equipe BRChain.</p>
           </div>
         </section>
+
+        {/* <NoticiasCarousel items={items} /> */}
 
         <NewsExplorer initialItems={items} initialError={error} />
       </main>
