@@ -26,9 +26,9 @@ export default async function NewsPage() {
           <Link href="/" className={styles.brand} aria-label="BRChain News — início">
             BR<span>chain</span> News
           </Link>
-          <LinkButton href="/" variant="dark">
+          {/* <LinkButton href="/" variant="dark">
             ← Voltar para BRChain
-          </LinkButton>
+          </LinkButton> */}
         </div>
       </header>
 

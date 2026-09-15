@@ -40,7 +40,7 @@ export async function LandingNewsPreview() {
           )}
 
           <div className={styles.cta}>
-            <LinkButton href="/news" variant="dark">
+            <LinkButton href="/news" variant="dark" target="_blank">
               Acesse a BRChain News →
             </LinkButton>
           </div>
