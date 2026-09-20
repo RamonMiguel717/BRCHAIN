@@ -1,0 +1,53 @@
+"use client";
+
+import { ReactNode, useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+
+import styles from "./featuresCarousel.module.css";
+
+interface FeaturesCarouselProps {
+  children: ReactNode;
+}
+
+export function FeaturesCarousel({
+  children,
+}: FeaturesCarouselProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  const [emblaRef] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    active: isMobile,
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      "(max-width: 960px)"
+    );
+
+    const handleChange = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    handleChange();
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
+
+  return (
+    <div className={styles.embla}>
+      <div
+        className={styles.emblaViewport}
+        ref={emblaRef}
+      >
+        <div className={styles.emblaContainer}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}

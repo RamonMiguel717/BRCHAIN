@@ -13,7 +13,7 @@
 }
 
 
-@media (min-width: 390px) and (max-width: 768px) {
+@media (max-width: 960px) {
   .emblaViewport {
     overflow: hidden;
   }

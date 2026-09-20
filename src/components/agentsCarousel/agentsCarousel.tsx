@@ -20,7 +20,7 @@ export function AgentsCarousel({ children }: AgentsCarouselProps) {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(
-      "(min-width: 390px) and (max-width: 768px)"
+      "(max-width: 960px)"
     );
 
     const handleChange = () => {

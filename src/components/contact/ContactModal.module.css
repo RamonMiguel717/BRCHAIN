@@ -113,3 +113,19 @@
   font-size: 0.9rem;
   margin-bottom: 12px;
 }
+
+@media (max-width: 480px) {
+  .overlay {
+    padding: 12px;
+  }
+
+  .content {
+    padding: 28px 20px 20px;
+    border-radius: 14px;
+  }
+
+  .header h2 {
+    font-size: 1.45rem;
+    padding-right: 28px;
+  }
+}

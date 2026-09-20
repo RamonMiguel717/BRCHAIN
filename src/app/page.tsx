@@ -4,10 +4,11 @@ import { Footer } from "@/components/Footer/Footer";
 import { LinkButton } from "@/components/Button/Button";
 import { ContactProvider } from "@/components/contact/ContactProvider";
 import { ContactButton } from "@/components/contact/ContactButton";
-import { CareLoop } from "@/components/careLoop/careLoop";
+// import { CareLoop } from "@/components/careLoop/careLoop";
 import { LandingNewsPreview } from "@/components/news/LandingNewsPreview";
 import { AgentsCarousel } from "@/components/agentsCarousel/agentsCarousel";
 import { GovernanceCarousel } from "@/components/governanceCarousel/governanceCarousel";
+import { FeaturesCarousel } from "@/components/featuresCarousel/featuresCarousel";
 import styles from "./page.module.css";
 
 export default function LandingPage() {
@@ -21,7 +22,7 @@ export default function LandingPage() {
             <div className={styles.heroContent}>
               <span className={styles.tag}>Health Intelligence Layer</span>
               <h1>
-                O Sistema Nervoso <span>Digital da Saúde.</span>
+                O Sistema Nervoso <br/> <span>Digital da Saúde.</span>
               </h1>
               <p>
                 O hospital do futuro não será construído apenas pelo departamento de TI. A BRCHAIN
@@ -106,6 +107,40 @@ export default function LandingPage() {
               </div>
             </GovernanceCarousel>
 
+            <h3 className={styles.subTitle}>Recursos Nativos da Plataforma</h3>
+            <FeaturesCarousel>
+              <div className={styles.visionCard}>
+                <p className={styles.highlight}>
+                  Gestão Dinâmica de Consentimento
+                </p>
+
+                <p>
+                  Concessão, revogação e auditoria granular de permissões, registradas de forma imutável.
+                </p>
+              </div>
+
+              <div className={styles.visionCard}>
+                <p className={styles.highlight}>
+                  Master Data Management (MDM)
+                </p>
+
+                <p>
+                  Centralização e higienização de dados mestres de pacientes, eliminando redundâncias e silos.
+                </p>
+              </div>
+
+              <div className={styles.visionCard}>
+
+                <p className={styles.highlight}>
+                  Trilha de Auditoria Contínua
+                </p>
+
+                <p>
+                  Rastreabilidade de ponta a ponta. Saiba quem, quando e por que cada registro foi acessado.
+                </p>
+              </div>
+            </FeaturesCarousel>
+
             <div className={styles.center}>
               <ContactButton variant="primary">
                 Avaliação de governança de dados
@@ -133,8 +168,7 @@ export default function LandingPage() {
                 <div className={styles.loopStep}>
                   <h4>Ambientes Sandbox Isolados e Seguros</h4>
                   <p>
-                    Treine modelos de IA e valide algoritmos com conjuntos anonimizados ou dados
-                    sintéticos. Valor científico sem risco de reidentificação.
+                    Treine modelos de IA e valide algoritmos utilizando conjuntos rigorosamente anonimizados ou dados sintéticos. Extraia valor científico sem risco de reidentificação.
                   </p>
                 </div>
                 <div className={styles.loopStep}>
@@ -159,22 +193,28 @@ export default function LandingPage() {
                   </p>
                 </div>
               </div>
+
+              <div className={styles.center}>
+                <ContactButton variant="primary">
+                  Conheça nossos Ambientes de Pesquisa e acelere sua P&D
+                </ContactButton>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ---------------- BRChain News (integração) ---------------- */}
-        <CareLoop />
+        {/* <CareLoop /> */}
 
         {/* ---------------- Soluções Corporativas ---------------- */}
         <section id="solucoes" className={styles.solucoes}>
           <div className="container">
             <div className={styles.sectionHeader}>
-              <h2>Soluções Corporativas e Integração via APIs</h2>
+              <h2>Soluções Corporativas e Integração via APIs: Interoperabilidade com Segurança Profunda</h2>
               <p>
-                A BRChain atua como o motor invisível e seguro da sua operação, uma suíte de
-                soluções B2B e APIs robustas que injetam governança avançada, rastreabilidade e
-                conformidade regulatória.
+                A transformação digital no setor de saúde exige que sistemas legados, prontuários eletrônicos e plataformas de telemedicina conversem entre si com fluidez. No entanto, cada nova conexão não pode representar uma nova vulnerabilidade.
+                <br/> <br/>
+                A BRChain atua como o motor invisível e seguro da sua operação. Oferecemos uma suíte de soluções B2B e APIs robustas projetadas para injetar governança avançada, rastreabilidade e conformidade regulatória.
               </p>
             </div>
 
@@ -182,38 +222,34 @@ export default function LandingPage() {
               <div className={styles.agentCard}>
                 <h4>API as a Service: Criptografia e Consentimento</h4>
                 <p>
-                  Integre o núcleo tecnológico da BRChain aos seus sistemas (HIS/LIS) e gerencie o
-                  consentimento do paciente em tempo real.
+                  Integre o núcleo tecnológico da BRChain aos seus sistemas (HIS/LIS) com agilidade. Nossas APIs permitem autenticar identidades e gerenciar o consentimento do paciente em tempo real.
                 </p>
               </div>
 
               <div className={styles.agentCard}>
                 <h4>Engenharia de Dados para o Futuro Analítico</h4>
                 <p>
-                  Extraímos e estruturamos dados presos em silos, preparando o terreno para Data
-                  Lakes corporativos e IA.
+                  Sistemas de saúde geram volumes massivos de informações presas em silos. Nossa arquitetura extrai e estrutura esses dados, preparando o terreno para Data Lakes corporativos e IA.
                 </p>
               </div>
 
               <div className={styles.agentCard}>
                 <h4>Licenciamento de Propriedade Intelectual</h4>
                 <p>
-                  Licenciamos algoritmos proprietários para consórcios e redes acelerarem sua
-                  maturidade digital com arquitetura validada.
+                  Para consórcios e redes que demandam internalização. Licenciamos nossos algoritmos proprietários para você acelerar sua maturidade digital utilizando uma arquitetura já validada.
                 </p>
               </div>
 
               <div className={styles.agentCard}>
                 <h4>Escalabilidade Inteligente e Validação</h4>
                 <p>
-                  Modelos de integração adaptáveis, pay-per-use, assinaturas ou licenciamento, com
-                  investimento escalável e previsível.
+                  Modelos de integração adaptáveis. Seja por pay-per-use, assinaturas ou licenciamento de PI, garantimos que o investimento tecnológico da sua empresa seja escalável e previsível.
                 </p>
               </div>
             </AgentsCarousel>
 
             <div className={styles.center} style={{ marginTop: 40 }}>
-              <ContactButton variant="primary">Fale com Nossos Especialistas</ContactButton>
+              <ContactButton variant="primary">Acesse nossa Documentação de API e Fale com Nossos Especialistas</ContactButton>
             </div>
           </div>
         </section>

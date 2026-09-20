@@ -50,21 +50,22 @@ export function Header() {
             </li>
 
             <li>
-              <a href="#news">Notícias</a>
+              <a href="#news">BRchain News</a>
             </li>
           </ul>
         </nav>
 
         {/* AÇÕES DESKTOP */}
         <div className={styles.actions}>
-          <LinkButton
+          {/* <LinkButton
             href="/news"
             variant="outline"
             size="sm"
+            target="_blank"
             className={styles.newsBtn}
           >
             Ver BRChain News
-          </LinkButton>
+          </LinkButton> */}
 
           <ContactButton
             variant="primary"
@@ -128,21 +129,22 @@ export function Header() {
               href="#news"
               onClick={() => setMenuOpen(false)}
             >
-              Notícias
+              BRchain News
             </a>
           </li>
         </ul>
 
         {/* BOTÕES NO MENU MOBILE */}
         <div className={styles.mobileActions}>
-          <LinkButton
+          {/* <LinkButton
             href="/news"
             variant="outline"
             size="sm"
+            target="_blank"
             className={styles.newsBtn}
           >
             Ver BRChain News
-          </LinkButton>
+          </LinkButton> */}
 
           <ContactButton
             variant="primary"

@@ -9,6 +9,7 @@
 .emblaContainer {
   display: flex;
   gap: 24px;
+  margin-bottom: 50px;
 }
 
 /* Desktop / telas maiores */
@@ -18,7 +19,7 @@
 }
 
 
-@media (min-width: 390px) and (max-width: 960px) {
+@media (max-width: 960px) {
   .emblaViewport {
     overflow: hidden;
   }

@@ -90,25 +90,24 @@
 
 @media (max-width: 768px) {
     .letters {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .lettersDiv {
+        padding: 0;
     }
 
     .letterButton {
-        max-width: none;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        font-size: clamp(2rem, 8vw, 3rem);
     }
 }
 
-/* ---------------- Responsivo ---------------- */
-@media (min-width: 1200px) and (max-width: 1400px) {}
-
-@media (min-width: 993px) and (max-width: 1200px) {}
-
-@media (min-width: 769px) and (max-width: 992px) {}
-
-@media (min-width: 578px) and (max-width: 768px) {}
-
-@media (min-width: 390px) and (max-width: 577px) {
+@media (max-width: 577px) {
     .careLoop {
         padding: 40px 0;
     }
@@ -119,15 +118,6 @@
 
     .header p {
         font-size: 16px;
-    }
-
-    .lettersDiv {
-        padding: 0;
-    }
-
-    .letterButton {
-        width: 80px;
-        height: 80px;
     }
 
     .header{

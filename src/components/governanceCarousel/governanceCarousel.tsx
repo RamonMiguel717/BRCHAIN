@@ -22,7 +22,7 @@ export function GovernanceCarousel({
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(
-      "(min-width: 390px) and (max-width: 960px)"
+      "(max-width: 960px)"
     );
 
     const handleChange = () => {

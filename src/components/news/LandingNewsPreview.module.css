@@ -60,7 +60,7 @@
 
 @media (min-width: 578px) and (max-width: 768px) {}
 
-@media (min-width: 390px) and (max-width: 577px) {
+@media (max-width: 577px) {
   .section {
     padding: 40px 0;
   }
