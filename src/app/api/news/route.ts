@@ -4,7 +4,7 @@ import { getApprovedNews } from "@/lib/news-queries";
 /**
  * Camada de acesso aos dados (API Route do Next.js).
  * Retorna notícias aprovadas; aceita ?q= para busca por palavra-chave (P-03).
- * A RLS do Supabase garante que apenas notícias `approved` são retornadas.
+ * A consulta (getApprovedNews) filtra por status='approved' na aplicação.
  */
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

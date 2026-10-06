@@ -48,7 +48,7 @@ export async function fetchHealthNews(query: string): Promise<GNewsArticle[]> {
   });
 
   const res = await fetch(`${GNEWS_BASE}/search?${params.toString()}`, {
-    // Não cachear no fetch — o cache real é a persistência no Supabase.
+    // Não cachear no fetch — o cache real é a persistência no MySQL.
     cache: "no-store",
   });
 

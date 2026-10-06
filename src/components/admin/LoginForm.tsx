@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { signIn } from "@/app/admin/actions";
 import styles from "@/app/admin/admin.module.css";
 
 /**
- * Login do Painel de Moderação via Supabase Auth (doc 3.3).
- * O moderador é criado por convite direto no painel do Supabase —
- * não há tela de cadastro no produto.
+ * Login do Painel de Moderação (auth própria sobre MySQL).
+ * O moderador é criado fora do produto — sem tela de cadastro:
+ *   node scripts/create-moderator.mjs email@dominio.com "SenhaForte"
  */
 export function LoginForm({ configured }: { configured: boolean }) {
   const router = useRouter();
@@ -22,10 +22,9 @@ export function LoginForm({ configured }: { configured: boolean }) {
     setError("");
     setLoading(true);
     try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        setError("E-mail ou senha inválidos.");
+      const res = await signIn(email, password);
+      if (!res.ok) {
+        setError(res.error ?? "E-mail ou senha inválidos.");
         setLoading(false);
         return;
       }
@@ -44,8 +43,9 @@ export function LoginForm({ configured }: { configured: boolean }) {
 
         {!configured ? (
           <div className={styles.notConfigured}>
-            Supabase ainda não configurado. Preencha <code>NEXT_PUBLIC_SUPABASE_URL</code> e{" "}
-            <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> em <code>.env.local</code> e reinicie o
+            Banco de dados ainda não configurado. Preencha as variáveis do MySQL
+            (<code>DATABASE_URL</code> ou <code>MYSQL_HOST</code> etc.) e{" "}
+            <code>AUTH_SECRET</code> em <code>.env.local</code> e reinicie o
             servidor.
           </div>
         ) : (

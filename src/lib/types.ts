@@ -5,7 +5,7 @@
 
 export type NewsStatus = "pending" | "approved" | "archived";
 
-/** Registro da tabela `news` no Supabase. */
+/** Registro da tabela `news` no MySQL. */
 export interface News {
   id: string;
   external_id: string;

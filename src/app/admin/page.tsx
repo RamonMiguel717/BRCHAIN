@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
 import { LoginForm } from "@/components/admin/LoginForm";
 import { ModerationPanel } from "@/components/admin/ModerationPanel";
+import { getSession, isAuthConfigured } from "@/lib/auth";
+import { isDbConfigured, query } from "@/lib/db";
 import type { News } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -13,40 +14,30 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 function isConfigured() {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
+  return isDbConfigured() && isAuthConfigured();
 }
 
 export default async function AdminPage() {
-  // Sem Supabase configurado: mostra o login com aviso.
+  // Sem banco/auth configurados: mostra o login com aviso.
   if (!isConfigured()) {
     return <LoginForm configured={false} />;
   }
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const session = await getSession();
 
   // Rota /admin inacessível sem autenticação (doc 3.3).
-  if (!user) {
+  if (!session) {
     return <LoginForm configured={true} />;
   }
 
-  // Moderador autenticado: lista todas as notícias (RLS permite ler tudo)
-  // e as separa por status para as abas do painel.
-  const { data } = await supabase
-    .from("news")
-    .select("*")
-    .order("updated_at", { ascending: false });
-
-  const all = (data as News[]) ?? [];
+  // Moderador autenticado: lista todas as notícias e as separa por status
+  // para as abas do painel. A autorização é da aplicação (sem RLS no MySQL).
+  const all = await query<News>("SELECT * FROM news ORDER BY updated_at DESC");
   const groups = {
     pending: all.filter((n) => n.status === "pending"),
     approved: all.filter((n) => n.status === "approved"),
     archived: all.filter((n) => n.status === "archived"),
   };
 
-  return <ModerationPanel groups={groups} moderatorEmail={user.email ?? "moderador"} />;
+  return <ModerationPanel groups={groups} moderatorEmail={session.email} />;
 }

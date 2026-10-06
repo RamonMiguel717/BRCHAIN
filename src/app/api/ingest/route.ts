@@ -1,5 +1,6 @@
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { execute, isDbConfigured } from "@/lib/db";
 import { HEALTH_TOPICS, fetchHealthNews, normalizeArticle, type NormalizedArticle } from "@/lib/gnews";
 
 // Sempre dinâmica — nunca deve ser pré-renderizada/cacheada.
@@ -9,7 +10,7 @@ export const maxDuration = 60;
 /**
  * Ingestão automática das notícias (cron 1x/dia — vercel.json).
  * Busca a GNews por tema, normaliza e insere em `news` como `pending`.
- * Deduplicação por `external_id` (upsert com ignoreDuplicates).
+ * Deduplicação por `external_id` (UNIQUE) via INSERT IGNORE.
  *
  * Proteção: exige header Authorization: Bearer <CRON_SECRET>.
  * A Vercel injeta esse header automaticamente nas execuções de cron.
@@ -23,14 +24,13 @@ export async function GET(req: Request) {
     }
   }
 
-  if (!process.env.GNEWS_API_KEY || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!process.env.GNEWS_API_KEY || !isDbConfigured()) {
     return NextResponse.json(
-      { error: "Ingestão não configurada (GNEWS_API_KEY / SUPABASE_SERVICE_ROLE_KEY)." },
+      { error: "Ingestão não configurada (GNEWS_API_KEY / conexão MySQL)." },
       { status: 500 }
     );
   }
 
-  const supabase = createAdminClient();
   const collected = new Map<string, NormalizedArticle>();
   const errors: string[] = [];
 
@@ -58,18 +58,36 @@ export async function GET(req: Request) {
   let inserted = 0;
 
   if (rows.length > 0) {
-    const { data, error } = await supabase
-      .from("news")
-      .upsert(rows, { onConflict: "external_id", ignoreDuplicates: true })
-      .select("id");
+    // Bulk insert com `VALUES ?` (mysql2 expande a matriz de tuplas).
+    // INSERT IGNORE descarta duplicatas pela UNIQUE KEY em external_id.
+    const values = rows.map((r) => [
+      randomUUID(),
+      r.external_id,
+      r.title,
+      r.source,
+      r.url,
+      r.image_url,
+      // ISO string → Date (o pool usa timezone "Z" para gravar em UTC).
+      r.published_at ? new Date(r.published_at) : null,
+      r.summary,
+      r.category,
+      r.status,
+    ]);
 
-    if (error) {
+    try {
+      const result = await execute(
+        `INSERT IGNORE INTO news
+           (id, external_id, title, source, url, image_url, published_at, summary, category, status)
+         VALUES ?`,
+        [values]
+      );
+      inserted = result.affectedRows;
+    } catch (e) {
       return NextResponse.json(
-        { error: `Falha ao inserir: ${error.message}`, fetched: rows.length, errors },
+        { error: `Falha ao inserir: ${(e as Error).message}`, fetched: rows.length, errors },
         { status: 500 }
       );
     }
-    inserted = data?.length ?? 0;
   }
 
   return NextResponse.json({

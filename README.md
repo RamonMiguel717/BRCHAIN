@@ -1,23 +1,27 @@
 # BRChain
 
 Landing Page institucional (B2B), **BRChain News** (B2C/investidores) e **Painel de Curadoria/Moderação** interno.
-Stack conforme a Documentação Técnica v1.5: **Next.js (App Router) + TypeScript + CSS Modules + Supabase + Vercel + API GNews**.
+Stack: **Next.js (App Router) + TypeScript + CSS Modules + MySQL + Vercel + API GNews**.
 
 ## Arquitetura
 
 ```
-GNews ─(Vercel Cron 1x/dia → /api/ingest)→ normaliza/dedupe → Supabase.news (pending)
+GNews ─(Vercel Cron 1x/dia → /api/ingest)→ normaliza/dedupe → MySQL.news (pending)
                                                                      │
-                              /admin (Supabase Auth) — DECISÃO HUMANA │
+                       /admin (auth própria: cookie assinado) — HUMANA│
                               ├─ Aprovar (+editar resumo) → approved + audit_log(approved)
                               └─ Rejeitar → archived + audit_log(rejected)
                                                                      │
-              RLS: anônimo lê só `approved`  ←──────────────────────┘
+       Autorização na aplicação: anônimo lê só `approved` ←─────────┘
                                                                      │
                      /news (BRChain News) e / (carrossel na Landing) ┘
 ```
 
-Não há backend dedicado: a camada de API são **API Routes** do Next.js; a persistência/auth é o **Supabase** (BaaS).
+Não há backend dedicado: a camada de API são **API Routes** do Next.js; a
+persistência é **MySQL** (via [`mysql2`](https://github.com/sidorares/node-mysql2))
+e a autenticação do painel é própria (senha bcrypt na tabela `moderators` +
+cookie de sessão assinado por HMAC). Como o MySQL não tem RLS, a autorização
+(anônimo lê só `approved`) é feita na aplicação.
 
 ## Rotas
 
@@ -25,7 +29,7 @@ Não há backend dedicado: a camada de API são **API Routes** do Next.js; a per
 |---|---|
 | `/` | Landing Page + seção de notícias aprovadas |
 | `/news` | BRChain News (busca por palavra-chave, estados de loading/erro/vazio) |
-| `/admin` | Painel de Curadoria (autenticado via Supabase) |
+| `/admin` | Painel de Curadoria (autenticado — sessão própria) |
 | `/api/news` | Leitura de notícias aprovadas (`?q=` busca) |
 | `/api/ingest` | Ingestão GNews (cron; protegida por `CRON_SECRET`) |
 | `/api/contact` | Formulário "Fale com um Especialista" (Resend) |
@@ -39,9 +43,18 @@ Não há backend dedicado: a camada de API são **API Routes** do Next.js; a per
 
 2. **Configurar variáveis** — copie `.env.example` para `.env.local` e preencha (veja abaixo).
 
-3. **Criar o schema no Supabase** — no SQL Editor do Supabase, rode o conteúdo de [`supabase/schema.sql`](supabase/schema.sql). Ele cria `news`, `audit_log`, a constraint de dedupe (`external_id`) e as políticas de RLS.
+3. **Criar o schema no MySQL** — crie o banco e rode o schema:
+   ```bash
+   mysql -h HOST -u USUARIO -p -e "CREATE DATABASE IF NOT EXISTS brchain CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   mysql -h HOST -u USUARIO -p brchain < db/schema.sql
+   ```
+   Ele cria `moderators`, `news`, `audit_log`, a constraint de dedupe (`external_id`) e as chaves estrangeiras.
 
-4. **Criar o moderador** — no painel Supabase: Authentication → Users → *Add user* (ou *Invite*). Não há tela de cadastro no produto.
+4. **Criar o moderador** — não há tela de cadastro no produto:
+   ```bash
+   node scripts/create-moderator.mjs email@dominio.com "SenhaForte" "Nome"
+   ```
+   (Rodar o mesmo comando de novo atualiza a senha.)
 
 5. **Rodar**
    ```bash
@@ -49,15 +62,16 @@ Não há backend dedicado: a camada de API são **API Routes** do Next.js; a per
    ```
    App em http://localhost:3000
 
-> O app funciona mesmo sem as chaves preenchidas: as notícias aparecem vazias e o `/admin` mostra um aviso de configuração — nada quebra.
+> O app funciona mesmo sem as variáveis preenchidas: as notícias aparecem vazias e o `/admin` mostra um aviso de configuração — nada quebra.
 
 ## Variáveis de ambiente
 
 | Variável | Onde obter | Escopo |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Settings → API | público |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Settings → API | público |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API | **servidor** (cron) |
+| `DATABASE_URL` | conexão MySQL (`mysql://user:senha@host:3306/brchain`) — alternativa às `MYSQL_*` | **servidor** |
+| `MYSQL_HOST` / `MYSQL_PORT` / `MYSQL_USER` / `MYSQL_PASSWORD` / `MYSQL_DATABASE` | credenciais do MySQL (se não usar `DATABASE_URL`) | **servidor** |
+| `MYSQL_SSL` | `true` em provedores que exigem TLS | servidor |
+| `AUTH_SECRET` | gere aleatório (`openssl rand -hex 32`) — assina o cookie de sessão | **servidor** |
 | `GNEWS_API_KEY` | gnews.io (plano gratuito) | servidor |
 | `CRON_SECRET` | gere aleatório (`openssl rand -hex 32`) | servidor |
 | `RESEND_API_KEY` | resend.com → API Keys | servidor |
