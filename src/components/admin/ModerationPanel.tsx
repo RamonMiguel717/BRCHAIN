@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import type { News, NewsStatus } from "@/lib/types";
 import { formatDate } from "@/lib/format";
 import { CATEGORY_OPTIONS } from "@/lib/categories";
-import { approveNews, rejectNews, signOut } from "@/app/admin/actions";
+import { approveNews, ingestNews, rejectNews, signOut } from "@/app/admin/actions";
 import styles from "@/app/admin/admin.module.css";
 
 type Groups = { pending: News[]; approved: News[]; archived: News[] };
@@ -26,6 +27,33 @@ export function ModerationPanel({
   const [tab, setTab] = useState<Tab>("pending");
   const list = groups[tab];
 
+  const router = useRouter();
+  const [isIngesting, startIngest] = useTransition();
+  const [ingestMsg, setIngestMsg] = useState("");
+  const [ingestErr, setIngestErr] = useState("");
+
+  function handleIngest() {
+    setIngestMsg("");
+    setIngestErr("");
+    startIngest(async () => {
+      const res = await ingestNews();
+      if (!res.ok) {
+        setIngestErr(res.error ?? "Falha ao buscar notícias.");
+        return;
+      }
+      const base =
+        res.inserted && res.inserted > 0
+          ? `${res.inserted} nova(s) notícia(s) importada(s).`
+          : "Nenhuma notícia nova — tudo que a GNews retornou já estava no banco.";
+      const extra = res.topicErrors?.length
+        ? ` (${res.topicErrors.length} tema(s) com aviso)`
+        : "";
+      setIngestMsg(base + extra);
+      // Atualiza as listas/contadores com os dados recém-inseridos.
+      router.refresh();
+    });
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles.topbar}>
@@ -41,6 +69,24 @@ export function ModerationPanel({
       </div>
 
       <div className={styles.content}>
+        <div className={styles.ingestBar}>
+          <div>
+            <strong className={styles.ingestTitle}>Notícias da GNews</strong>
+            <span className={styles.ingestHint}>
+              Busca novas notícias de saúde e as adiciona como pendentes.
+            </span>
+          </div>
+          <button
+            className={styles.ingestBtn}
+            onClick={handleIngest}
+            disabled={isIngesting}
+          >
+            {isIngesting ? "Buscando…" : "↻ Buscar novas notícias"}
+          </button>
+        </div>
+        {ingestMsg && <p className={styles.ingestOk}>{ingestMsg}</p>}
+        {ingestErr && <p className={styles.ingestError}>{ingestErr}</p>}
+
         <div className={styles.tabs} role="tablist">
           {(Object.keys(TAB_LABEL) as Tab[]).map((t) => (
             <button

@@ -3,6 +3,7 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { execute, isDbConfigured, query } from "@/lib/db";
+import { runIngestion } from "@/lib/ingest";
 import {
   clearSessionCookie,
   createSessionToken,
@@ -201,6 +202,45 @@ export async function rejectNews(newsId: string): Promise<ActionResult> {
 
     revalidatePath("/admin");
     return { ok: true };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message };
+  }
+}
+
+export interface IngestActionResult extends ActionResult {
+  fetched?: number;
+  inserted?: number;
+  /** erros não-fatais por tema (ex.: limite da GNews) */
+  topicErrors?: string[];
+}
+
+/**
+ * Dispara a ingestão da GNews sob demanda a partir do painel (botão
+ * "Buscar novas notícias"). Exige moderador autenticado. As notícias entram
+ * como `pending` para curadoria; duplicatas são ignoradas.
+ */
+export async function ingestNews(): Promise<IngestActionResult> {
+  try {
+    await requireModerator();
+
+    if (!isDbConfigured()) {
+      return { ok: false, error: "Banco de dados não configurado." };
+    }
+    if (!process.env.GNEWS_API_KEY) {
+      return {
+        ok: false,
+        error: "GNEWS_API_KEY não configurada no servidor.",
+      };
+    }
+
+    const result = await runIngestion();
+    revalidatePath("/admin");
+    return {
+      ok: true,
+      fetched: result.fetched,
+      inserted: result.inserted,
+      topicErrors: result.errors.length ? result.errors : undefined,
+    };
   } catch (e) {
     return { ok: false, error: (e as Error).message };
   }
