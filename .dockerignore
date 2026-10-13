@@ -1,0 +1,27 @@
+# Dependências e artefatos de build (reinstalados/gerados na imagem)
+node_modules
+.next
+out
+build
+
+# Ambiente e segredos — nunca entram na imagem
+.env
+.env*.local
+
+# Git e metadados
+.git
+.gitignore
+
+# Config de ferramentas locais
+.claude
+.vscode
+.idea
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Docs/artefatos que não afetam o runtime
+*.md
+BRChain_Documentacao_Tecnica.pdf

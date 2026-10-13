@@ -1,0 +1,65 @@
+# ============================================================
+# BRChain — stack local completa (app Next.js + MySQL)
+#   docker compose up --build
+# App: http://localhost:3000  ·  MySQL exposto em localhost:3306
+#
+# Variáveis: o compose carrega o arquivo .env da raiz (copie de
+# .env.docker.example). Valores não-secretos têm default abaixo.
+# ============================================================
+
+services:
+  db:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-brchain}
+      MYSQL_USER: ${MYSQL_USER:-brchain}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-brchain}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      # Cria as tabelas no primeiro boot (banco vazio). Em bancos já
+      # inicializados este script NÃO roda de novo.
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      # 127.0.0.1 força TCP: o servidor temporário que roda os scripts de
+      # init só escuta no socket, então o banco só fica "healthy" quando o
+      # servidor definitivo (com o schema aplicado) está no ar.
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      # Conexão com o serviço de banco (rede interna do compose).
+      MYSQL_HOST: db
+      MYSQL_PORT: "3306"
+      MYSQL_USER: ${MYSQL_USER:-brchain}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-brchain}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-brchain}
+      # Segredo da sessão do painel — DEFINA no .env para produção.
+      AUTH_SECRET: ${AUTH_SECRET:-dev-insecure-change-me}
+      # A stack local roda em HTTP: cookie de sessão sem a flag Secure para o
+      # login funcionar também via IP da rede. Use "true" atrás de HTTPS.
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      # Integrações opcionais (deixe vazio se não usar).
+      GNEWS_API_KEY: ${GNEWS_API_KEY:-}
+      CRON_SECRET: ${CRON_SECRET:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      CONTACT_FROM_EMAIL: ${CONTACT_FROM_EMAIL:-}
+      CONTACT_TO_EMAIL: ${CONTACT_TO_EMAIL:-contato@brchain.com.br}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+
+volumes:
+  db_data:
