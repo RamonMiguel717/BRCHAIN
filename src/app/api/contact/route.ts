@@ -1,12 +1,22 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-interface ContactPayload {
-  name?: string;
-  email?: string;
-  phone?: string;
-  institution?: string;
-  message?: string;
+/** Campos do formulário e o tamanho máximo aceito para cada um. */
+const LIMITS = {
+  name: 120,
+  email: 254,
+  phone: 40,
+  institution: 160,
+  message: 5000,
+} as const;
+
+type Field = keyof typeof LIMITS;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Remove quebras de linha (evita injeção em cabeçalhos como o assunto). */
+function singleLine(s: string) {
+  return s.replace(/[\r\n]+/g, " ");
 }
 
 function escapeHtml(s: string) {
@@ -18,20 +28,40 @@ function escapeHtml(s: string) {
 }
 
 export async function POST(req: Request) {
-  let body: ContactPayload;
+  let body: Record<string, unknown>;
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Requisição inválida." }, { status: 400 });
   }
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "Requisição inválida." }, { status: 400 });
+  }
 
-  const { name, email, phone, institution, message } = body;
+  // Normaliza e valida cada campo: obrigatório, texto e dentro do limite.
+  const fields = {} as Record<Field, string>;
+  for (const key of Object.keys(LIMITS) as Field[]) {
+    const raw = body[key];
+    const value = typeof raw === "string" ? raw.trim() : "";
+    if (!value) {
+      return NextResponse.json(
+        { error: "Preencha todos os campos obrigatórios." },
+        { status: 400 }
+      );
+    }
+    if (value.length > LIMITS[key]) {
+      return NextResponse.json(
+        { error: "Um ou mais campos excedem o tamanho permitido." },
+        { status: 400 }
+      );
+    }
+    fields[key] = value;
+  }
 
-  if (!name || !email || !phone || !institution || !message) {
-    return NextResponse.json(
-      { error: "Preencha todos os campos obrigatórios." },
-      { status: 400 }
-    );
+  const { name, email, phone, institution, message } = fields;
+
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: "Informe um e-mail válido." }, { status: 400 });
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -52,7 +82,7 @@ export async function POST(req: Request) {
       from,
       to,
       replyTo: email,
-      subject: `[BRChain] Novo contato — ${name} (${institution})`,
+      subject: singleLine(`[BRChain] Novo contato — ${name} (${institution})`),
       html: `
         <h2>Novo contato via "Fale com um Especialista"</h2>
         <p><strong>Nome:</strong> ${escapeHtml(name)}</p>

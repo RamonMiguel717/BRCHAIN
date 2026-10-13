@@ -47,7 +47,8 @@ export async function getApprovedNews({
 
     if (term && term.trim()) {
       // LIKE é case-insensitive na collation padrão (utf8mb4_unicode_ci).
-      const like = `%${term.trim()}%`;
+      // Escapa os curingas do LIKE para que % e _ digitados sejam literais.
+      const like = `%${term.trim().replace(/[\\%_]/g, "\\$&")}%`;
       where.push("(title LIKE ? OR summary LIKE ? OR summary_edited LIKE ?)");
       params.push(like, like, like);
     }

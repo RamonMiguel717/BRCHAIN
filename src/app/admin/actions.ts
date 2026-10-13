@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { execute, isDbConfigured, query } from "@/lib/db";
 import { runIngestion } from "@/lib/ingest";
 import {
+  DUMMY_PASSWORD_HASH,
   clearSessionCookie,
   createSessionToken,
   getSession,
@@ -19,6 +20,17 @@ export interface ActionResult {
   error?: string;
   /** Aviso não-bloqueante (ex.: resumo original recuperado). */
   warning?: string;
+}
+
+/**
+ * Invalida o cache das páginas afetadas por uma decisão de curadoria: o painel
+ * e as listagens públicas (landing e BRChain News), para que a mudança
+ * apareça imediatamente em vez de esperar a janela de revalidação.
+ */
+function revalidateModeratedPages() {
+  revalidatePath("/admin");
+  revalidatePath("/news");
+  revalidatePath("/");
 }
 
 /** Um resumo é válido para publicação se contiver ao menos uma letra (texto). */
@@ -63,8 +75,12 @@ export async function signIn(
     ]);
 
     const mod = rows[0];
-    // Mesmo sem usuário, compara para reduzir enumeração por timing.
-    const valid = mod ? await verifyPassword(password, mod.password_hash) : false;
+    // Mesmo sem usuário, compara contra um hash fictício para que o tempo de
+    // resposta não revele se o e-mail existe (enumeração por timing).
+    const valid = await verifyPassword(
+      password,
+      mod?.password_hash ?? DUMMY_PASSWORD_HASH
+    );
     if (!mod || !valid) {
       return { ok: false, error: "E-mail ou senha inválidos." };
     }
@@ -157,7 +173,7 @@ export async function approveNews(
       ]
     );
 
-    revalidatePath("/admin");
+    revalidateModeratedPages();
     return { ok: true, warning };
   } catch (e) {
     return { ok: false, error: (e as Error).message };
@@ -200,7 +216,7 @@ export async function rejectNews(newsId: string): Promise<ActionResult> {
       ]
     );
 
-    revalidatePath("/admin");
+    revalidateModeratedPages();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: (e as Error).message };

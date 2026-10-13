@@ -6,13 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:schema": "node scripts/apply-schema.mjs",
+    "db:seed": "node scripts/seed-news.mjs",
+    "db:moderator": "node scripts/create-moderator.mjs"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "embla-carousel-react": "^8.6.0",
     "mysql2": "^3.11.5",
-    "next": "15.1.6",
+    "next": "^15.5.27",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^4.0.1"

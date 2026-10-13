@@ -11,6 +11,10 @@ import { GovernanceCarousel } from "@/components/governanceCarousel/governanceCa
 import { FeaturesCarousel } from "@/components/featuresCarousel/featuresCarousel";
 import styles from "./page.module.css";
 
+// A seção de notícias (LandingNewsPreview) lê do banco: revalida
+// periodicamente em vez de congelar o conteúdo no momento do build.
+export const revalidate = 300;
+
 export default function LandingPage() {
   return (
     <ContactProvider>

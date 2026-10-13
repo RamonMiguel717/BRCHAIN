@@ -18,6 +18,13 @@ export interface IngestResult {
   errors: string[];
 }
 
+/** ISO string → Date; datas ausentes ou inválidas viram NULL (não quebram o lote). */
+function toDate(iso: string | null): Date | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 /**
  * Executa a ingestão da GNews: busca por tema, normaliza/dedupe e grava em
  * `news` como `pending`. Lança em caso de falha de escrita no banco.
@@ -61,8 +68,8 @@ export async function runIngestion(): Promise<IngestResult> {
       r.source,
       r.url,
       r.image_url,
-      // ISO string → Date (o pool usa timezone "Z" para gravar em UTC).
-      r.published_at ? new Date(r.published_at) : null,
+      // O pool usa timezone "Z" para gravar o Date em UTC.
+      toDate(r.published_at),
       r.summary,
       r.category,
       r.status,

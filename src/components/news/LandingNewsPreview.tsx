@@ -7,7 +7,7 @@ import styles from "./LandingNewsPreview.module.css";
 /**
  * Integração da BRChain News à Landing Page (doc 3.1: "seção com as notícias").
  * Mostra uma prévia das notícias aprovadas + CTA para a página completa.
- * Server Component: busca no servidor (RLS garante só `approved`).
+ * Server Component: busca no servidor (getApprovedNews filtra só `approved`).
  */
 export async function LandingNewsPreview() {
   const { items } = await getApprovedNews({ limit: 10 });

@@ -43,26 +43,61 @@ cookie de sessão assinado por HMAC). Como o MySQL não tem RLS, a autorização
 
 2. **Configurar variáveis** — copie `.env.example` para `.env.local` e preencha (veja abaixo).
 
-3. **Criar o schema no MySQL** — crie o banco e rode o schema:
+3. **Criar o schema no MySQL** — com a conexão já no `.env.local`, rode (não precisa do cliente `mysql`):
    ```bash
-   mysql -h HOST -u USUARIO -p -e "CREATE DATABASE IF NOT EXISTS brchain CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-   mysql -h HOST -u USUARIO -p brchain < db/schema.sql
+   npm run db:schema
    ```
    Ele cria `moderators`, `news`, `audit_log`, a constraint de dedupe (`external_id`) e as chaves estrangeiras.
+   (Alternativa com o cliente `mysql`: `mysql -h HOST -u USUARIO -p BANCO < db/schema.sql`.)
 
 4. **Criar o moderador** — não há tela de cadastro no produto:
    ```bash
-   node scripts/create-moderator.mjs email@dominio.com "SenhaForte" "Nome"
+   npm run db:moderator -- email@dominio.com "SenhaForte" "Nome"
    ```
    (Rodar o mesmo comando de novo atualiza a senha.)
 
-5. **Rodar**
+5. **(Opcional) Notícias de teste** sem a GNews: `npm run db:seed`.
+
+6. **Rodar**
    ```bash
    npm run dev
    ```
-   App em http://localhost:3000
+   App em http://localhost:3000 — o painel de curadoria fica em `/admin`, com o botão **"Buscar novas notícias"** para importar da GNews sob demanda.
 
 > O app funciona mesmo sem as variáveis preenchidas: as notícias aparecem vazias e o `/admin` mostra um aviso de configuração — nada quebra.
+
+## Rodar com Docker
+
+Sobe a stack completa (app Next.js + MySQL) em containers — sem instalar Node/MySQL localmente. Requer **Docker Desktop** (ou Docker Engine + Compose v2).
+
+1. **Configurar variáveis** — copie `.env.docker.example` para `.env` (na raiz) e ajuste. No mínimo gere o `AUTH_SECRET`:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+   (Sem Node à mão, use qualquer string aleatória longa.)
+
+2. **Subir**
+   ```bash
+   docker compose up --build
+   ```
+   - App em http://localhost:3000 · MySQL exposto em `localhost:3306`.
+   - O `db/schema.sql` é aplicado automaticamente no **primeiro** boot do banco (volume vazio), criando `moderators`, `news` e `audit_log`.
+
+3. **Criar o moderador** (em outro terminal, com a stack no ar):
+   ```bash
+   docker compose exec app node scripts/create-moderator.mjs admin@brchain.com.br "SuaSenha" "Admin"
+   ```
+
+4. **(Opcional) Notícias de teste** sem a GNews:
+   ```bash
+   docker compose exec app node scripts/seed-news.mjs
+   ```
+
+Comandos úteis:
+- Parar: `docker compose down` · Apagar também o banco: `docker compose down -v`.
+- Logs da app: `docker compose logs -f app`.
+
+> A imagem usa o build **standalone** do Next (`output: "standalone"` em `next.config.mjs`) para um container enxuto. O `.dockerignore` mantém `node_modules`, `.next` e segredos (`.env*`) fora da imagem.
 
 ## Variáveis de ambiente
 
@@ -72,6 +107,7 @@ cookie de sessão assinado por HMAC). Como o MySQL não tem RLS, a autorização
 | `MYSQL_HOST` / `MYSQL_PORT` / `MYSQL_USER` / `MYSQL_PASSWORD` / `MYSQL_DATABASE` | credenciais do MySQL (se não usar `DATABASE_URL`) | **servidor** |
 | `MYSQL_SSL` | `true` em provedores que exigem TLS | servidor |
 | `AUTH_SECRET` | gere aleatório (`openssl rand -hex 32`) — assina o cookie de sessão | **servidor** |
+| `COOKIE_SECURE` | opcional: `true`/`false` força a flag Secure do cookie (padrão: ligada em produção; o Docker local usa `false`) | servidor |
 | `GNEWS_API_KEY` | gnews.io (plano gratuito) | servidor |
 | `CRON_SECRET` | gere aleatório (`openssl rand -hex 32`) | servidor |
 | `RESEND_API_KEY` | resend.com → API Keys | servidor |
@@ -91,7 +127,9 @@ cookie de sessão assinado por HMAC). Como o MySQL não tem RLS, a autorização
 
 ## Deploy (Vercel)
 
-1. Importe o repositório na Vercel (framework Next.js detectado automaticamente).
-2. Configure todas as variáveis de ambiente no projeto Vercel.
-3. O cron de `/api/ingest` é registrado a partir de `vercel.json`.
-4. Domínio `brchain.com.br` → Landing; `/news` e `/admin` são subcaminhos.
+1. Provisione um **MySQL acessível pela internet** (ex.: Railway com proxy TCP público) e aplique o schema (`npm run db:schema` com a `DATABASE_URL` dele no `.env.local`).
+2. Importe o repositório na Vercel (framework Next.js detectado automaticamente).
+3. Configure as variáveis de ambiente no projeto Vercel — no mínimo `DATABASE_URL` e `AUTH_SECRET`, além de `GNEWS_API_KEY`, `CRON_SECRET` e as do Resend.
+4. Crie o moderador apontando para o banco de produção: `npm run db:moderator -- email "senha" "Nome"`.
+5. O cron de `/api/ingest` é registrado a partir de `vercel.json`.
+6. Domínio `brchain.com.br` → Landing; `/news` e `/admin` são subcaminhos.

@@ -75,11 +75,21 @@ export async function getSession(): Promise<SessionPayload | null> {
   return verifySessionToken(store.get(COOKIE)?.value);
 }
 
+/**
+ * Flag Secure do cookie. Padrão: ligada em produção. COOKIE_SECURE permite
+ * desligá-la em ambientes de produção servidos por HTTP (ex.: stack Docker local).
+ */
+function cookieSecure(): boolean {
+  const override = process.env.COOKIE_SECURE;
+  if (override) return override === "true";
+  return process.env.NODE_ENV === "production";
+}
+
 export async function setSessionCookie(token: string): Promise<void> {
   const store = await cookies();
   store.set(COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: cookieSecure(),
     sameSite: "lax",
     path: "/",
     maxAge: MAX_AGE,
@@ -90,6 +100,14 @@ export async function clearSessionCookie(): Promise<void> {
   const store = await cookies();
   store.set(COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
 }
+
+/**
+ * Hash bcrypt de uma senha aleatória descartada. Usado no login quando o
+ * e-mail não existe, para que a resposta leve o mesmo tempo de um e-mail
+ * válido (evita enumeração de moderadores por timing).
+ */
+export const DUMMY_PASSWORD_HASH =
+  "$2a$10$LutOWvNsIw1g/ZcbSOr1eOvTmRNEqIbRw60ykrzeWv2/fkGklaxQG";
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);
